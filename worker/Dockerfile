@@ -7,7 +7,7 @@
 # the worker image is not optimized for size, but rather uses ubuntu for wider package availability
 
 FROM        ubuntu:20.04
-MAINTAINER  Buildbot maintainers
+MAINTAINER  MARS Infrastructure Team
 
 
 # Last build date - this can be updated whenever there are security updates so
@@ -37,9 +37,13 @@ RUN         apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     # Install required python packages, and twisted
     pip3 --no-cache-dir install 'twisted[tls]' && \
-    pip3 install virtualenv && \
-    mkdir /buildbot &&\
-    useradd -ms /bin/bash buildbot
+    pip3 install virtualenv
+
+# To share the local reference repo between host and docker, the user 'buildbot'
+# of the docker container has to be created with the same uid as in the host.
+RUN mkdir /buildbot &&\
+    groupadd -g 1210 buildbot &&\
+    useradd -u 1210 -g 1210 -ms /bin/bash buildbot
 
 COPY . /usr/src/buildbot-worker
 COPY docker/buildbot.tac /buildbot/buildbot.tac
