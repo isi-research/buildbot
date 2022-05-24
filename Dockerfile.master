@@ -84,6 +84,8 @@ RUN \
         libpq5 \
         libcairo2 \
         openssh-client \
+        openssl \
+        libssl-dev \
         python3 \
         python3-pip \
         tar \
@@ -101,7 +103,11 @@ COPY --from=buildbot-build /wheels /wheels
 RUN virtualenv --python=python3 /buildbot_venv && \
     /buildbot_venv/bin/pip3 install --upgrade pip setuptools && \
     cd /wheels && /buildbot_venv/bin/pip3 install $(ls -1 | grep -v 'buildbot-worker') && \
+    /buildbot_venv/bin/pip3 uninstall -y pyopenssl && \
+    /buildbot_venv/bin/pip3 uninstall -y cryptography && \
+    /buildbot_venv/bin/pip3 install pyopenssl && \
     rm -r /root/.cache /wheels
+
 
 COPY master/docker/buildbot.tac /usr/src/buildbot/buildbot.tac
 COPY master/docker/start_buildbot.sh /usr/src/buildbot/start_buildbot.sh
