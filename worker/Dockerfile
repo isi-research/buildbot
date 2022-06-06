@@ -51,6 +51,17 @@ COPY docker/buildbot.tac /buildbot/buildbot.tac
 RUN pip3 install /usr/src/buildbot-worker && \
     chown -R buildbot /buildbot
 
+# Install git lfs
+# Reference: https://github.com/git-lfs/git-lfs/wiki/Installation#docker-recipes
+RUN build_deps="curl" && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${build_deps} ca-certificates && \
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-lfs && \
+    git lfs install && \
+    DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove ${build_deps} && \
+    rm -r /var/lib/apt/lists/*
+
 USER buildbot
 WORKDIR /buildbot
 
