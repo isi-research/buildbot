@@ -45,7 +45,7 @@ RUN         apt-get update && \
     libncurses5-dev libbz2-dev liblzma-dev libsqlite3-dev libffi-dev libssl-dev tcl-dev \
     linux-headers-generic libgdbm-dev libreadline-dev tk tk-dev \
     # Tools required by O2 build (vim to install xxd)
-    pigz vim libusb-dev
+    pigz vim libusb-1.0-0-dev
 
 # Test runs produce a great quantity of dead grandchild processes.  In a
 # non-docker environment, these are automatically reaped by init (process 1),
