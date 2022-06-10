@@ -88,7 +88,8 @@ RUN pip3 install /usr/src/buildbot-worker && \
 #    rm -r /var/lib/apt/lists/*
 
 # ISI Bitbucket doesn't seem to work well with this latest version.
-# Install git lfs 2.6.1 (the one installed on O2 developer box)
+# For Ubuntu 16.04, install git lfs 2.6.1 (the one installed on O2 developer box)
+# For Ubuntu 20.04, install git lfs 2.9.2 (works with git 2.25.1)
 RUN wget --content-disposition https://packagecloud.io/github/git-lfs/packages/ubuntu/xenial/git-lfs_2.6.1_amd64.deb/download.deb
 RUN dpkg -i git-lfs_2.6.1_amd64.deb
 
